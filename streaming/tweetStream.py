@@ -12,7 +12,7 @@ access_token_secret = "TqEt9xmbPnPXZxYvorEJOT2GStBL4Hzw0msVCyeMuBx9G"
 
 class StdOutListener(StreamListener):
     def on_data(self, data):
-        print data
+        out.write(data)
         return True
 
     def on_error(self, status):
@@ -23,6 +23,8 @@ if __name__ == '__main__':
         auth = OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
         stream = Stream(auth, l)
+
+        out = open("twitter_data.txt", "w")
 
         if len(sys.argv)<=1:
             print("Input a series of words to be filtered")
