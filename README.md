@@ -1,7 +1,10 @@
 # twitterScraper
 Includes functionality for:
+
   -Ingesting streamed tweets using user inputted filter words
+
   -Ingesting a specific users tweets
+
   -Sentiment analysis for both
 
 ## Streaming
