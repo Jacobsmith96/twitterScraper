@@ -4,12 +4,8 @@ from tweepy.streaming import StreamListener
 from tweepy import Stream
 import pandas
 import sys
-
-#Setup authentication
-consumer_key = "VzEgtLw9mhYA1gecaOLTS7US6"
-consumer_secret = "AwMCrGIpjNfC1DBPjgIuONH57v2ueJLK1ovIOIwLjyVwsEFhJK"
-access_token = "844933048911237121-oJZ9iTf9J4Sse4S7XmfPudc5WSdgRQr"
-access_token_secret = "TqEt9xmbPnPXZxYvorEJOT2GStBL4Hzw0msVCyeMuBx9G"
+import json
+import argparse
 
 #Define a function that clears a file
 def deleteContent(fName):
@@ -27,6 +23,18 @@ class StdOutListener(StreamListener):
         print status
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("conf_filename", help="the file containing your Twitter API info")
+    parser.add_argument("filter_words", nargs="*", help="the words you wish to filter on")
+    args = parser.parse_args()
+    
+    conf = json.load(open(args.conf_filename))
+    access_token = conf["token"]
+    access_token_secret = conf["token_secret"]
+    consumer_key = conf["consumer_key"]
+    consumer_secret = conf["consumer_secret"]
+     
+    screen_name = args.screen_name
     #Create the StreamListener
     l = StdOutListener()
     #Setup authentication
@@ -39,10 +47,5 @@ if __name__ == '__main__':
     #Open the output file for writing to
     out = open("twitter_data.txt", "w")
     
-    #Make sure the user inputs a series of words for filtering
-    if len(sys.argv)<=1:
-        print("Input a series of words to be filtered")
-    #Start the stream
-    else:
-        stream.filter(track=sys.argv[1:])
+    stream.filter(track=args.filter_words)
 
